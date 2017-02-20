@@ -50,6 +50,8 @@ Image: ./BUILD/MK3239/GCC_ARM/mbed_blink.bin
 1. Connect your mbed device to the computer over USB.
 3. Open serial terminal on PC, like secureCRT, with serial configuration: 115200/8/n/1.
 4. Reboot your MiCOKit with "BOOT SEL" set to ON, you can see connamds list on serial port.
+
+
 ```
 MICO bootloader for EMW3239_1, v3.0, HARDWARE_REVISION: 1.0
 + command -------------------------+ function ------------+
@@ -72,6 +74,7 @@ MICO bootloader for EMW3239_1, v3.0, HARDWARE_REVISION: 1.0
 
 MXCHIP> 
 ```
+
 4. Input command "1" and press return, send mbed_blink.bin using Ymodem protocol.
 5. Input command "boot" and press return, MiCOKit will excute the new firmware
 6. Reboot your MiCOKit with "BOOT SEL" set to OFF, application will excute automatically
