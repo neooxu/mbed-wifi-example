@@ -51,7 +51,7 @@ int main() {
 
 
 
-#if 1
+#if 0
 #define wifi_station_log(M, ...) custom_log("WIFI", M, ##__VA_ARGS__)
 
 static void micoNotify_ConnectFailedHandler(OSStatus err, void* inContext)
@@ -124,6 +124,56 @@ exit:
   mico_rtos_delete_thread(NULL);
   return err;
 }
+
+#endif
+
+
+#if 1
+
+#define wifi_scan_log(M, ...) custom_log("WIFI", M, ##__VA_ARGS__)
+
+static void micoNotify_ApListCallback(ScanResult *pApList)
+{
+  int i=0;
+  wifi_scan_log("got %d AP", pApList->ApNum);
+  for(i=0; i<pApList->ApNum; i++)
+  {
+    wifi_scan_log("ap%d: name = %s  | strenth=%d",
+                  i,pApList->ApList[i].ssid, pApList->ApList[i].ApPower);
+
+  }
+}
+
+int main( void )
+{
+    NVIC_SetPriority( RTC_WKUP_IRQn, 1 ); /* RTC Wake-up event   */
+    NVIC_SetPriority( SDIO_IRQn, 2 ); /* WLAN SDIO           */
+    NVIC_SetPriority( DMA2_Stream3_IRQn, 3 ); /* WLAN SDIO DMA       */
+    NVIC_SetPriority( USART6_IRQn, 6 ); /* MICO_UART_1         */
+    NVIC_SetPriority( DMA2_Stream6_IRQn, 7 ); /* MICO_UART_1 TX DMA  */
+    NVIC_SetPriority( DMA2_Stream1_IRQn, 7 ); /* MICO_UART_1 RX DMA  */
+    NVIC_SetPriority( USART2_IRQn, 6 ); /* BT UART             */
+    NVIC_SetPriority( DMA1_Stream5_IRQn, 7 ); /* BT UART RX DMA      */
+    NVIC_SetPriority( DMA1_Stream6_IRQn, 7 ); /* BT UART TX DMA      */
+    NVIC_SetPriority( EXTI0_IRQn, 14 ); /* GPIO                */
+    NVIC_SetPriority( EXTI1_IRQn, 14 ); /* GPIO                */
+    NVIC_SetPriority( EXTI2_IRQn, 14 ); /* GPIO                */
+    NVIC_SetPriority( EXTI3_IRQn, 14 ); /* GPIO                */
+    NVIC_SetPriority( EXTI4_IRQn, 14 ); /* GPIO                */
+    NVIC_SetPriority( EXTI9_5_IRQn, 14 ); /* GPIO                */
+    NVIC_SetPriority( EXTI15_10_IRQn, 14 ); /* GPIO                */
+
+    MicoInit( );
+
+    /* Register user function when wlan scan is completed */
+    mico_system_notify_register( mico_notify_WIFI_SCAN_COMPLETED, (void *) micoNotify_ApListCallback, NULL );
+
+    wifi_scan_log("start scan mode, please wait...");
+    micoWlanStartScan( );
+
+    mico_rtos_thread_sleep( MICO_WAIT_FOREVER );
+}
+
 
 #endif
 
