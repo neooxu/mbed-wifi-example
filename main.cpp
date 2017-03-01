@@ -5,8 +5,18 @@
 DigitalOut led1(MBED_SYS_LED);
 Serial pc(STDIO_UART_TX, STDIO_UART_RX, 115200);
 
+
+
 #if 0
 #define os_helloworld_log(format, ...)  custom_log("helloworld", format, ##__VA_ARGS__)
+
+mico_semaphore_t sem = NULL;
+
+void easylink_pressed_callback(void *arg)
+{
+    mico_rtos_set_semaphore( &sem );
+    mico_gpio_output_trigger( MICO_RF_LED );
+}
 
 // main() runs in its own thread in the OS
 // (note the calls to wait below for delays)
@@ -18,14 +28,30 @@ int main() {
 
 	mico_gpio_enable_irq( EasyLink_BUTTON, IRQ_TRIGGER_FALLING_EDGE, easylink_pressed_callback, NULL );
 
+	mico_rtos_init_semaphore( &sem, 1 );
+
+	pc.printf( "Helloworld" );
+
     while (true) {
+//        if( kNoErr != mico_rtos_get_semaphore( &sem, 5000 ) ) {
+//            pc.printf( "Get semaphore timeout\r\n" );
+//        }
+//        else{
+//            os_helloworld_log(" Get semaphore success\r\n");
+//            led1 = !led1;
+//        }
         led1 = !led1;
-        os_helloworld_log("This program runs since %d seconds.", mico_rtos_get_time() );
-        wait(1);
+        mico_rtos_delay_milliseconds( 1000 );
+        //wait(1);
+
     }
 }
 #endif
 
+
+
+
+#if 1
 #define wifi_station_log(M, ...) custom_log("WIFI", M, ##__VA_ARGS__)
 
 static void micoNotify_ConnectFailedHandler(OSStatus err, void* inContext)
@@ -52,6 +78,23 @@ int main( void )
 {
   OSStatus err = kNoErr;
   network_InitTypeDef_adv_st  wNetConfigAdv;
+
+  NVIC_SetPriority( RTC_WKUP_IRQn    ,  1 ); /* RTC Wake-up event   */
+  NVIC_SetPriority( SDIO_IRQn        ,  2 ); /* WLAN SDIO           */
+  NVIC_SetPriority( DMA2_Stream3_IRQn,  3 ); /* WLAN SDIO DMA       */
+  NVIC_SetPriority( USART6_IRQn      ,  6 ); /* MICO_UART_1         */
+  NVIC_SetPriority( DMA2_Stream6_IRQn,  7 ); /* MICO_UART_1 TX DMA  */
+  NVIC_SetPriority( DMA2_Stream1_IRQn,  7 ); /* MICO_UART_1 RX DMA  */
+  NVIC_SetPriority( USART2_IRQn      ,  6 ); /* BT UART             */
+  NVIC_SetPriority( DMA1_Stream5_IRQn,  7 ); /* BT UART RX DMA      */
+  NVIC_SetPriority( DMA1_Stream6_IRQn,  7 ); /* BT UART TX DMA      */
+  NVIC_SetPriority( EXTI0_IRQn       , 14 ); /* GPIO                */
+  NVIC_SetPriority( EXTI1_IRQn       , 14 ); /* GPIO                */
+  NVIC_SetPriority( EXTI2_IRQn       , 14 ); /* GPIO                */
+  NVIC_SetPriority( EXTI3_IRQn       , 14 ); /* GPIO                */
+  NVIC_SetPriority( EXTI4_IRQn       , 14 ); /* GPIO                */
+  NVIC_SetPriority( EXTI9_5_IRQn     , 14 ); /* GPIO                */
+  NVIC_SetPriority( EXTI15_10_IRQn   , 14 ); /* GPIO                */
 
   MicoInit( );
 
@@ -81,4 +124,6 @@ exit:
   mico_rtos_delete_thread(NULL);
   return err;
 }
+
+#endif
 
