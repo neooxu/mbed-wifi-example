@@ -128,7 +128,7 @@ exit:
 #endif
 
 
-#if 1
+#if 0
 
 #define wifi_scan_log(M, ...) custom_log("WIFI", M, ##__VA_ARGS__)
 
@@ -146,22 +146,7 @@ static void micoNotify_ApListCallback(ScanResult *pApList)
 
 int main( void )
 {
-    NVIC_SetPriority( RTC_WKUP_IRQn, 1 ); /* RTC Wake-up event   */
-    NVIC_SetPriority( SDIO_IRQn, 2 ); /* WLAN SDIO           */
-    NVIC_SetPriority( DMA2_Stream3_IRQn, 3 ); /* WLAN SDIO DMA       */
-    NVIC_SetPriority( USART6_IRQn, 6 ); /* MICO_UART_1         */
-    NVIC_SetPriority( DMA2_Stream6_IRQn, 7 ); /* MICO_UART_1 TX DMA  */
-    NVIC_SetPriority( DMA2_Stream1_IRQn, 7 ); /* MICO_UART_1 RX DMA  */
-    NVIC_SetPriority( USART2_IRQn, 6 ); /* BT UART             */
-    NVIC_SetPriority( DMA1_Stream5_IRQn, 7 ); /* BT UART RX DMA      */
-    NVIC_SetPriority( DMA1_Stream6_IRQn, 7 ); /* BT UART TX DMA      */
-    NVIC_SetPriority( EXTI0_IRQn, 14 ); /* GPIO                */
-    NVIC_SetPriority( EXTI1_IRQn, 14 ); /* GPIO                */
-    NVIC_SetPriority( EXTI2_IRQn, 14 ); /* GPIO                */
-    NVIC_SetPriority( EXTI3_IRQn, 14 ); /* GPIO                */
-    NVIC_SetPriority( EXTI4_IRQn, 14 ); /* GPIO                */
-    NVIC_SetPriority( EXTI9_5_IRQn, 14 ); /* GPIO                */
-    NVIC_SetPriority( EXTI15_10_IRQn, 14 ); /* GPIO                */
+    mico_board_init();
 
     MicoInit( );
 
@@ -176,4 +161,19 @@ int main( void )
 
 
 #endif
+
+
+
+int main( void )
+{
+  OSStatus err = kNoErr;
+  /* Start MiCO system functions according to mico_config.h,
+     Define macro MICO_WLAN_CONNECTION_ENABLE to enable wlan connection function
+     Select wlan configuration mode: MICO_WLAN_CONFIG_MODE
+     Define EasyLink settings */
+  err = mico_system_init( (mico_Context_t *)mico_system_context_init( 0 ) );
+
+  mico_rtos_delete_thread(NULL);
+  return err;
+}
 
