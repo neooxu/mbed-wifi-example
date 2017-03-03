@@ -61,7 +61,7 @@
 
 /************************************************************************
  * Command line interface */
-//#define MICO_CLI_ENABLE
+#define MICO_CLI_ENABLE
 
 /************************************************************************
  * Start a system monitor daemon, application can register some monitor  

@@ -203,15 +203,15 @@ int main( void )
     network_InitTypeDef_adv_st  wNetConfigAdv;
     mico_rtos_init_semaphore( &wait_sem, 1 );
 
-    /*Register user function for MiCO nitification: WiFi status changed */
+    /*Register user function for MiCO notification: WiFi status changed */
     err = mico_system_notify_register( mico_notify_WIFI_STATUS_CHANGED,
                                        (void *) micoNotify_WifiStatusHandler, NULL );
     require_noerr( err, exit );
 
     /* Start MiCO system functions according to mico_config.h */
     mico_board_init();
-    //mico_system_init( (mico_Context_t *)mico_system_context_init( 0 ) );
-#if 1
+    mico_system_init( (mico_Context_t *)mico_system_context_init( 0 ) );
+#if 0
     MicoInit( );
     cli_init( );
     /* Initialize wlan parameters */
