@@ -1,0 +1,16 @@
+{
+    "macros": [
+        "MBEDTLS_USER_CONFIG_FILE=\"mbedtls_entropy_config.h\""
+    ],
+
+    "config": {
+        "wifi-ssid": {
+            "help": "WiFi SSID",
+            "value": "\"William Xu\""
+        },
+        "wifi-password": {
+            "help": "WiFi Password",
+            "value": "\"mx099555\""
+        }
+    }
+}
