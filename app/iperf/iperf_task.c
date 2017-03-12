@@ -344,7 +344,7 @@ void iperf_udp_run_server( char *parameters[] )
                     tmp_t = curr_t - t1 - 1;
                 }
 
-                if ( (((curr_t - t1) / 10) == interval_tag) && ((curr_h_ms >= t1_h_ms) || ((curr_t - t1) % 10) >= 1) ) {
+                if ( (((int)(curr_t - t1) / 10) == interval_tag) && ((curr_h_ms >= t1_h_ms) || ((curr_t - t1) % 10) >= 1) ) {
                     printf( "\r\nInterval: %d.0 - %d.0 sec   ", (int) (curr_t - t1) / 10 * 10 - 10,
                             (int) (curr_t - t1) / 10 * 10 );
                     iperf_display_report( "UDP Server", 10, 0, iperf_diff_count( pkt_count, tmp_count ) );
@@ -576,7 +576,7 @@ void iperf_tcp_run_server( char *parameters[] )
                     }
                     if ( pkt_count.times >= 1 && interval_tag > 0 ) {
                         iperf_get_current_time( &curr_t, 0 );
-                        if ( ((curr_t - t1) / 10) == interval_tag ) {
+                        if ( ((int)(curr_t - t1) / 10) == interval_tag ) {
                             printf( "\r\nInterval: %d - %d sec   ", (int) (curr_t - t1) / 10 * 10 - 10,
                                     (int) (curr_t - t1) / 10 * 10 );
                             iperf_display_report( "TCP Server", 10, 0, iperf_diff_count( pkt_count, tmp_count ) );
@@ -780,7 +780,7 @@ void iperf_tcp_run_client( char *parameters[] )
         if ( interval_tag > 0 ) {
             iperf_get_current_time( &curr_t, 0 );
 
-            if ( ((curr_t - t1) / 10) == interval_tag ) {
+            if ( ((int)(curr_t - t1) / 10) == interval_tag ) {
                 printf( "\r\nInterval: %d - %d sec   ", (int) (curr_t - t1) / 10 * 10 - 10,
                         (int) (curr_t - t1) / 10 * 10 );
                 iperf_display_report( "TCP Client", 10, 0, iperf_diff_count( pkt_count, tmp_count ) );
@@ -790,7 +790,7 @@ void iperf_tcp_run_client( char *parameters[] )
         }
 
         iperf_get_current_time( &curr_t, 0 );
-    } while ( (curr_t - t1) < send_time );
+    } while ( (int)(curr_t - t1) < send_time );
 
     iperf_get_current_time( &t2, 0 );
 
@@ -1024,7 +1024,7 @@ void iperf_udp_run_client( char *parameters[] )
         }
 
         if ( interval_tag > 0 ) {
-            if ( ((current_tick - t1_ms) / 10000) == interval_tag ) {
+            if ( ((int)(current_tick - t1_ms) / 10000) == interval_tag ) {
                 printf( "\r\nInterval: %d - %d sec   ", (int) (current_tick - t1_ms) / 10000 * 10 - 10,
                         (int) (current_tick - t1_ms) / 10000 * 10 );
                 iperf_display_report( "UDP Client", 10, 0, iperf_diff_count( pkt_count, tmp_count ) );
@@ -1033,7 +1033,7 @@ void iperf_udp_run_client( char *parameters[] )
             }
             iperf_get_current_time( &curr_t, &current_tick );
         }
-    } while ( (current_tick + pkt_delay - t1_ms) < send_time * 1000 );
+    } while ( (int)(current_tick + (uint32_t)pkt_delay - t1_ms) < send_time * 1000 );
 
     iperf_get_current_time( &t2, 0 );
     iperf_display_report( "[Total]UDP Client", t2 - t1, 0, pkt_count );
@@ -1076,27 +1076,23 @@ count_t iperf_calculate_result( int pkt_size, count_t pkt_count, int need_to_con
     if ( pkt_size > 0 ) {
         pkt_count.Bytes += pkt_size;
         pkt_count.times++;
-    } else
-        ;
+    }
 
     if ( need_to_convert == 1 ) {
         if ( pkt_count.Bytes >= 1024 ) {
             pkt_count.KBytes += (pkt_count.Bytes / 1024);
             pkt_count.Bytes = pkt_count.Bytes % 1024;
-        } else
-            ;
+        }
 
         if ( pkt_count.KBytes >= 1024 ) {
             pkt_count.MBytes += (pkt_count.KBytes / 1024);
             pkt_count.KBytes = pkt_count.KBytes % 1024;
-        } else
-            ;
+        }
 
         if ( pkt_count.MBytes >= 1024 ) {
             pkt_count.GBytes += (pkt_count.MBytes / 1024);
             pkt_count.MBytes = pkt_count.MBytes % 1024;
-        } else
-            ;
+        }
     }
 
     return pkt_count;

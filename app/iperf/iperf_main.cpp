@@ -34,8 +34,8 @@ int app_iperf( void )
 
     /* Start MiCO system functions according to mico_config.h */
     mico_board_init();
-    mico_system_init( (mico_Context_t *)mico_system_context_init( 0 ) );
-#if 0
+    //mico_system_init( (mico_Context_t *)mico_system_context_init( 0 ) );
+
     MicoInit( );
     cli_init( );
     /* Initialize wlan parameters */
@@ -51,7 +51,7 @@ int app_iperf( void )
     /* Connect Now! */
     iperf_test_log( "connecting to %s...", wNetConfigAdv.ap_info.ssid );
     micoWlanStartAdv (&wNetConfigAdv);
-#endif
+
     /* Wait for wlan connection*/
     mico_rtos_get_semaphore( &wait_sem, MICO_WAIT_FOREVER );
     iperf_test_log( "Wlan connected successful" );

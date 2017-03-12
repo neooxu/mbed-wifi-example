@@ -114,4 +114,6 @@ int app_mbed_wifi()
     wifi.disconnect();
 
     printf("\r\nDone\r\n");
+
+    return 0;
 }

@@ -452,5 +452,6 @@ int app_mbed_tls_client() {
     HelloHTTPS *hello = new HelloHTTPS(HTTPS_SERVER_NAME, HTTPS_SERVER_PORT, &wifi_iface);
     hello->startTest(HTTPS_PATH);
     delete hello;
+    return 0;
 }
 
