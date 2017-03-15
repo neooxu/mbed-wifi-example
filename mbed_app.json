@@ -6,11 +6,11 @@
     "config": {
         "wifi-ssid": {
             "help": "WiFi SSID",
-            "value": "\"William Xu\""
+            "value": "\"mxchip-rd\""
         },
         "wifi-password": {
             "help": "WiFi Password",
-            "value": "\"mx099555\""
+            "value": "\"stm32f215\""
         }
     }
 }
