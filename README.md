@@ -9,8 +9,8 @@ Please install [mbed CLI](https://github.com/ARMmbed/mbed-cli#installing-mbed-cl
 From the command line, import the example:
 
 ```
-mbed import code.aliyun.com:mbed_mxchip/mbed_blink
-cd mbed_blink
+mbed import https://github.com/MXCHIP/mbed-wifi-example
+cd mbed-wifi-example
 ```
 
 ### Now compile
