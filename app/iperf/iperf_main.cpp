@@ -40,9 +40,9 @@ int app_iperf( void )
     cli_init( );
     /* Initialize wlan parameters */
     memset( &wNetConfigAdv, 0x0, sizeof(wNetConfigAdv) );
-    strcpy( (char*) wNetConfigAdv.ap_info.ssid, "SWYANG" ); /* wlan ssid string */
-    strcpy( (char*) wNetConfigAdv.key, "yangbatian" ); /* wlan key string or hex data in WEP mode */
-    wNetConfigAdv.key_len = strlen( "yangbatian" ); /* wlan key length */
+    strcpy( (char*) wNetConfigAdv.ap_info.ssid, "William Xu" ); /* wlan ssid string */
+    strcpy( (char*) wNetConfigAdv.key, "mx099555" ); /* wlan key string or hex data in WEP mode */
+    wNetConfigAdv.key_len = strlen( "mx099555" ); /* wlan key length */
     wNetConfigAdv.ap_info.security = SECURITY_TYPE_AUTO; /* wlan security mode */
     wNetConfigAdv.ap_info.channel = 0; /* Select channel automatically */
     wNetConfigAdv.dhcpMode = DHCP_Client; /* Fetch Ip address from DHCP server */
