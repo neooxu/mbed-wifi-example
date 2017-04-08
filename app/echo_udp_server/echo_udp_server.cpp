@@ -22,19 +22,29 @@ const SocketAddress udp_server( "172.16.0.181", 10000 );
 
 const int ECHO_SERVER_PORT = 7;
 
-const int BUFFER_SIZE = 512;
+const int BUFFER_SIZE = 4096;
 char buffer[BUFFER_SIZE] = {0};
 
+void tcp_send( TCPSocket *tcp, const void *data, nsapi_size_t size )
+{
+    nsapi_size_t remain = size;
+    uint8_t *data_tmp = (uint8_t *)data;
+
+    while( remain )
+    {
+        remain -= tcp->send( data_tmp, remain );
+        data_tmp = (uint8_t *)data + size - remain;
+    }
+}
 
 void app_mbed_tcp_udp( )
 {
     UDPSocket udpsocket;
     TCPSocket tcpsocket;
     EMW10xxInterface wifi_iface;
-    nsapi_size_or_error_t size;
     nsapi_error_t ns_ret;
 
-    int ret = wifi_iface.connect( MBED_CONF_APP_WIFI_SSID, MBED_CONF_APP_WIFI_PASSWORD, NSAPI_SECURITY_WPA_WPA2, 0 );
+    int ret = wifi_iface.connect( "William Xu", "mx099555", NSAPI_SECURITY_WPA_WPA2, 0 );
     if ( ret != 0 ) {
         printf( "\r\nConnection error\r\n" );
         return;
@@ -44,21 +54,21 @@ void app_mbed_tcp_udp( )
     udpsocket.open( &wifi_iface );
     tcpsocket.open( &wifi_iface );
 
-    ns_ret = tcpsocket.connect( SocketAddress("10.0.3.32", 20000) );
+    ns_ret = tcpsocket.connect( SocketAddress("10.0.3.10", 20000) );
     if ( ns_ret != NSAPI_ERROR_OK ) {
         printf( "\r\n TCP Connection error\r\n" );
         return;
     }
 
-    while(1){
-        size = udpsocket.sendto( SocketAddress("10.0.3.32", 10000), buffer, BUFFER_SIZE );
-        printf( "UDP %d data is sent\r\n", size );
-        size = tcpsocket.send( buffer, BUFFER_SIZE );
-        Thread::wait(1000);
+//    while(1){
+//        //udpsocket.sendto( SocketAddress("10.0.3.10", 10000), buffer, BUFFER_SIZE );
+//    }
+
+    while(1)
+    {
+        tcp_send( &tcpsocket, buffer, BUFFER_SIZE );
     }
 }
-
-
 
 
 
