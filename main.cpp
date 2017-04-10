@@ -12,8 +12,8 @@ int main( void )
     //RUN_APPLICATION( iperf );
     //RUN_APPLICATION( blink );
     //RUN_APPLICATION( mbed_wifi );
-    //RUN_APPLICATION( mbed_tls_client );
-    RUN_APPLICATION( mbed_tcp_udp );
+    RUN_APPLICATION( mbed_tls_client );
+    //RUN_APPLICATION( mbed_tcp_udp );
     //RUN_APPLICATION( soft_ap );
 
 	return 0;
