@@ -1,6 +1,49 @@
 #include "mbed.h"
 #include "mico.h"
 
+#ifdef TARGET_AZ3166
+
+Serial pc(STDIO_UART_TX, STDIO_UART_RX, 115200);
+
+DigitalOut led1(LED1);
+DigitalOut led2(LED2);
+DigitalOut led3(LED3);
+
+class Counter {
+public:
+    Counter(PinName pin) : _interrupt(pin), _count(0) {        // create the InterruptIn on the pin specified to Counter
+        _interrupt.rise(callback(this, &Counter::increment)); // attach increment function of this counter instance
+    }
+
+    void increment() {
+        _count++;
+        pc.printf("Current count is %d\r\n", _count);
+    }
+
+    int read() {
+        return _count;
+    }
+
+private:
+    InterruptIn _interrupt;
+    volatile int _count;
+};
+
+Counter CountA(USER_BUTTON_A);
+Counter CountB(USER_BUTTON_B);
+
+int app_blink( )
+{
+    pc.printf( "helloworld!\r\n" );
+
+    while ( true ) {
+        led1 = !led1;
+        led2 = !led2;
+        led3 = !led3;
+        Thread::wait( 500 );
+    }
+}
+#else
 
 DigitalOut led1(MBED_SYS_LED);
 Serial pc(STDIO_UART_TX, STDIO_UART_RX, 115200);
@@ -38,6 +81,8 @@ int app_blink( )
         }
     }
 }
+#endif
+
 
 
 
