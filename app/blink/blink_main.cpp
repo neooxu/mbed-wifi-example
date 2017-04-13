@@ -1,7 +1,11 @@
 #include "mbed.h"
 #include "mico.h"
 
+#define TARGET_AZ3166
+
 #ifdef TARGET_AZ3166
+
+#include "oled.h"
 
 Serial pc(STDIO_UART_TX, STDIO_UART_RX, 115200);
 
@@ -34,7 +38,20 @@ Counter CountB(USER_BUTTON_B);
 
 int app_blink( )
 {
+    char oled_show_line[OLED_DISPLAY_MAX_CHAR_PER_ROW+1] = {'\0'};   // max char each line
+
     pc.printf( "helloworld!\r\n" );
+
+    // init OLED
+    OLED_Init();
+    OLED_Clear();
+    snprintf(oled_show_line, OLED_DISPLAY_MAX_CHAR_PER_ROW+1, "%s", MODEL);
+    OLED_ShowString(OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_1, oled_show_line);
+    memset(oled_show_line, '\0', OLED_DISPLAY_MAX_CHAR_PER_ROW+1);
+    snprintf(oled_show_line, OLED_DISPLAY_MAX_CHAR_PER_ROW+1, "%s", "MiCO            ");
+    OLED_ShowString(OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_2,  oled_show_line);
+    OLED_ShowString(OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_3,  "   Running...   ");
+    OLED_ShowString(OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_4,  "                ");
 
     while ( true ) {
         led1 = !led1;
