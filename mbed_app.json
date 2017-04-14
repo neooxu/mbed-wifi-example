@@ -1,6 +1,9 @@
 {
     "macros": [
-        "MBEDTLS_USER_CONFIG_FILE=\"mbedtls_entropy_config.h\"", "OLED_I2C_PORT=MICO_I2C_1", "DEBUG=1"
+        "MBEDTLS_USER_CONFIG_FILE=\"mbedtls_entropy_config.h\"", 
+        "OLED_I2C_PORT=MICO_I2C_1", 
+        "LPS25HB_I2C_PORT=MICO_I2C_1",
+        "DEBUG=1"
     ],
 
     "config": {

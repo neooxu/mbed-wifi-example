@@ -6,8 +6,11 @@
 #ifdef TARGET_AZ3166
 
 #include "oled.h"
+#include "lps25hb.h"
 
 Serial pc(STDIO_UART_TX, STDIO_UART_RX, 115200);
+
+#define app_log(format, ...)  custom_log("MiCOKit_STmems", format, ##__VA_ARGS__)
 
 DigitalOut led1(LED1);
 DigitalOut led2(LED2);
@@ -38,6 +41,9 @@ Counter CountB(USER_BUTTON_B);
 
 int app_blink( )
 {
+    OSStatus err = kNoErr;
+    float lps25hb_temp_data = 0;
+    float lps25hb_pres_data = 0;
     char oled_show_line[OLED_DISPLAY_MAX_CHAR_PER_ROW+1] = {'\0'};   // max char each line
 
     pc.printf( "helloworld!\r\n" );
@@ -53,12 +59,25 @@ int app_blink( )
     OLED_ShowString(OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_3,  "   Running...   ");
     OLED_ShowString(OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_4,  "                ");
 
+    /*init LPS25HB */
+    err = lps25hb_sensor_init();
+    require_noerr_string( err, exit, "ERROR: Unable to Init LPS25HB" );
+
     while ( true ) {
         led1 = !led1;
         led2 = !led2;
         led3 = !led3;
+
+        err = lps25hb_Read_Data( &lps25hb_temp_data, &lps25hb_pres_data );
+        require_noerr_string( err, exit, "ERROR: Can't Read LPS25HB Data" );
+        sprintf( oled_show_line, "%.2fm", lps25hb_pres_data );
+        OLED_ShowString( 0, OLED_DISPLAY_ROW_3, oled_show_line );
+        app_log("Pressure: %.2fm", lps25hb_pres_data);
+
         Thread::wait( 500 );
     }
+exit:
+    return 0;
 }
 #else
 
