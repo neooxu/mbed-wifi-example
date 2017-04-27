@@ -18,38 +18,53 @@ cd mbed-wifi-example
 Invoke `mbed compile` specifying the name of your platform and your favorite toolchain (`GCC_ARM`, `ARM`, `IAR`). For example, for the ARM Compiler 5:
 
 ```
-mbed compile -m MK3239 -t GCC_ARM
+mbed compile -m AZ3166 -t GCC_ARM
 ```
 
 Your PC may take a few minutes to compile your code. At the end you should get the following result:
 
 ```
-+--------------------+-------+-------+------+
-| Module             | .text | .data | .bss |
-+--------------------+-------+-------+------+
-| Fill               |    71 |     4 |    9 |
-| Misc               | 21055 |  2184 |  104 |
-| drivers            |   118 |     4 |  100 |
-| hal                |   527 |     0 |    8 |
-| platform           |  1155 |     4 |  269 |
-| rtos               |    38 |     4 |    4 |
-| rtos/rtx           |  5907 |    20 | 6870 |
-| targets/TARGET_STM |  7507 |     4 |  740 |
-| Subtotals          | 36378 |  2224 | 8104 |
-+--------------------+-------+-------+------+
++-----------------------+--------+-------+-------+
+| Module                |  .text | .data |  .bss |
++-----------------------+--------+-------+-------+
+| Fill                  |    366 |    15 |   121 |
+| Misc                  | 158722 |  2564 | 51384 |
+| drivers               |   2739 |     4 |   164 |
+| features/filesystem   |    627 |     0 |     0 |
+| features/netsocket    |   3907 |    85 |    60 |
+| hal                   |    518 |     0 |     8 |
+| platform              |   2069 |     4 |   297 |
+| rtos                  |    213 |     4 |     4 |
+| rtos/rtx              |   8163 |    20 |  6874 |
+| targets/TARGET_MXCHIP |   2574 |     4 |     0 |
+| targets/TARGET_STM    |  23328 |     0 |  1424 |
+| Subtotals             | 203226 |  2700 | 60336 |
++-----------------------+--------+-------+-------+
 Allocated Heap: unknown
 Allocated Stack: unknown
-Total Static RAM memory (data + bss): 10328 bytes
-Total RAM memory (data + bss + heap + stack): 10328 bytes
-Total Flash memory (text + data + misc): 38602 bytes
-Image: ./BUILD/MK3239/GCC_ARM/mbed_blink.bin
+Total Static RAM memory (data + bss): 63036 bytes
+Total RAM memory (data + bss + heap + stack): 63036 bytes
+Total Flash memory (text + data + misc): 205926 bytes
+
+Image: ./BUILD/AZ3166/GCC_ARM/mbed-wifi-example.bin
 ```
 
 ### Program your board
+####First choise(with Microsoft Azure IOT Developer Kit)
+
+1.Connect your mbed device to the compoter over USB.
+
+2.You will find a removable device USB Mass Storage named AZ3166
+
+3.send mbed-wifi-example.bin into the device
+
+4.reboot your deivce,the application will excute automatically
+
+#### Second choise
 
 1. Connect your mbed device to the computer over USB.
-3. Open serial terminal on PC, like secureCRT, with serial configuration: 115200/8/n/1.
-4. Reboot your MiCOKit with "BOOT SEL" set to ON, you can see connamds list on serial port.
+2. Open serial terminal on PC, like secureCRT, with serial configuration: 115200/8/n/1.
+3. Reboot your MiCOKit with "BOOT SEL" set to ON, you can see connamds list on serial port.
 
 
 ```
@@ -94,10 +109,10 @@ mbed export -m MK3239 -i uvision
 To debug the application:
 
 1. Start uVision.
-1. Import the uVision project generated earlier.
-1. Compile your application and generate an `.axf` file.
-1. Make sure uVision is configured to debug over CMSIS-DAP (From the Project menu > Options for Target '...' > Debug tab > Use CMSIS-DAP Debugger).
-1. Set breakpoints and start a debug session.
+2. Import the uVision project generated earlier.
+3. Compile your application and generate an `.axf` file.
+4. Make sure uVision is configured to debug over CMSIS-DAP (From the Project menu > Options for Target '...' > Debug tab > Use CMSIS-DAP Debugger).
+5. Set breakpoints and start a debug session.
 
 ## Troubleshooting
 
