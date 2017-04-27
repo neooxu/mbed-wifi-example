@@ -50,7 +50,7 @@ Image: ./BUILD/AZ3166/GCC_ARM/mbed-wifi-example.bin
 ```
 
 ### Program your board
-####First choise(with Microsoft Azure IOT Developer Kit)
+#### First choise (with Microsoft Azure IOT Developer Kit)
 
 1.Connect your mbed device to the compoter over USB.
 
