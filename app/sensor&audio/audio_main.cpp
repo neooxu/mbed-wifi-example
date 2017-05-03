@@ -174,11 +174,12 @@ int app_audio( )
     OLED_Init( );
     /*1.oled all light*/
     OLED_FillAll( );
-    Thread::wait( 2000 );
-    OLED_Clear( );
+//    Thread::wait( 2000 );
+//    OLED_Clear( );
 
     /*init LPS22HB */
     err = lps25hb_sensor_init( );
+    printf("error code is %d\r\n",err);
     require_noerr_string( err, exit, "ERROR: Init LPS22HB Error" );
 
     hts221.init( NULL );
@@ -217,17 +218,24 @@ int app_audio( )
         switch ( page )
         {
             case 0:
-                /*acc glo eeprom*/
                 snprintf( oled_show_line, OLED_DISPLAY_MAX_CHAR_PER_ROW + 1, "%s", MODEL );
                 OLED_ShowString( OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_1, oled_show_line );
 
-                lsm6dsl.get_x_axes( (int32_t*) x_axes );
-                lsm6dsl.get_g_axes( (int32_t*) g_axes );
-                sprintf( oled_show_line, "acc%02d,%02d,%02d", x_axes[0], x_axes[1], x_axes[2] );
+                err = lps25hb_Read_Data( &lps22hb_temp_data, &lps22hb_pres_data );
+                require_noerr_string( err, exit, "ERROR: Can't Read LPS22HB Data" );
+                sprintf( oled_show_line, "pre%.2fm", lps22hb_pres_data );
                 OLED_ShowString( 0, OLED_DISPLAY_ROW_2, oled_show_line );
-
-                sprintf( oled_show_line, "glo%02d,%02d,%02d", g_axes[0], g_axes[1], g_axes[2] );
-                OLED_ShowString( 0, OLED_DISPLAY_ROW_3, oled_show_line );
+                /*acc glo eeprom*/
+//                snprintf( oled_show_line, OLED_DISPLAY_MAX_CHAR_PER_ROW + 1, "%s", MODEL );
+//                OLED_ShowString( OLED_DISPLAY_COLUMN_START, OLED_DISPLAY_ROW_1, oled_show_line );
+//
+//                lsm6dsl.get_x_axes( (int32_t*) x_axes );
+//                lsm6dsl.get_g_axes( (int32_t*) g_axes );
+//                sprintf( oled_show_line, "acc%02d,%02d,%02d", x_axes[0], x_axes[1], x_axes[2] );
+//                OLED_ShowString( 0, OLED_DISPLAY_ROW_2, oled_show_line );
+//
+//                sprintf( oled_show_line, "glo%02d,%02d,%02d", g_axes[0], g_axes[1], g_axes[2] );
+//                OLED_ShowString( 0, OLED_DISPLAY_ROW_3, oled_show_line );
 
                 break;
             case 1:
