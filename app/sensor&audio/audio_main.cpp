@@ -184,6 +184,8 @@ int app_audio( )
 
     hts221.init( NULL );
     hts221.enable( );
+    
+    lis2mdl.init();
 
     lsm6dsl.init( NULL );
     lsm6dsl.enable_g( );
