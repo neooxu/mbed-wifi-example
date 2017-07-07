@@ -185,7 +185,7 @@ int app_audio( )
     hts221.init( NULL );
     hts221.enable( );
     
-    lis2mdl.init();
+    lis2mdl.init( NULL );
 
     lsm6dsl.init( NULL );
     lsm6dsl.enable_g( );
@@ -306,7 +306,7 @@ int app_audio( )
             printf("Pressure: %.2f\r\n", lps22hb_pres_data);
             hts221.get_humidity( &hts221_humidity );
             hts221.get_temperature( &hts221_temp );
-            printf("Humidity: %.2f%,%.2fC\r\n", hts221_humidity,hts221_temp);
+            printf("Humidity: %.2f%%,%.2fC\r\n", hts221_humidity,hts221_temp);
             printf("#");
             fflush(stdout);
             print_log = 0;
